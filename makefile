@@ -15,8 +15,6 @@
 CC=gcc
 CFLAGS=-c -std=c99
 
-BIN=mev
-
 SDIR=src
 ODIR=obj
 BDIR=build
@@ -48,12 +46,13 @@ DEP=$(SDEP) $(CDEP)
 
 
 
-all: files $(BIN)
+all: files mev
+
 
 $(ODIR)/%.o: $(SRC) $(DEP)
 	$(CC) -c -o $@ $< $(CFLAGS)
-
-$(BIN): $(OBJ)
+	
+mev: $(OBJ)
 	$(CC) -o $(BDIR)/$@ $^
 
 files:
