@@ -13,47 +13,45 @@
 #
 
 CC=gcc
-CFLAGS=-c -std=c99
+CFLAGS=-std=c99
 
+# src dirs
 SDIR=src
+CDIR=$(SDIR)/components
+
+# include dirs
+SINC=$(SDIR)/inc
+CINC=$(CDIR)/inc
+
+# build dirs
 ODIR=obj
 BDIR=build
 
-IDIR=inc
-CDIR=$(SDIR)/components
+# src depends
+_SDEP=edbg.h system.h hardware.h
+SDEP=$(patsubst %,$(SINC)/%,$(_SDEP))
 
+# component depends
+_CDEP=cpu.h memory.h
+CDEP=$(patsubst %,$(CINC)/%,$(_CDEP))
 
-# src/
-SSRC=$(patsubst %,$(SDIR)/%,edbg.c system.c kernel.c)
-# src/inc/
-SINC=$(SDIR)/$(IDIR)
-SDEP=$(patsubst %,$(SINC)/%,edbg.h system.h hardware.h)
-
-
-# src/components/
-CSRC=$(patsubst %,$(CDIR)/%,cpu.c memory.c)
-# src/components/inc/
-CINC=$(CDIR)/$(IDIR)
-CDEP=$(patsubst %,$(CINC)/%,cpu.h memory.h)
-
-
-OBJS=edbg.o system.o kernel.o cpu.o memory.o
-OBJ=$(patsubst %,$(ODIR)/%,$(OBJS))
-
-# path
-SRC=$(SSRC) $(CSRC)
-DEP=$(SDEP) $(CDEP)
-
-
+# all objs
+_OBJ=edbg.o system.o kernel.o cpu.o memory.o
+OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 
 all: files mev
 
+# compile all sdir/ to .o
+$(ODIR)/%.o: $(SDIR)/%.c $(SDEP)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(ODIR)/%.o: $(SRC) $(DEP)
+# compile all cdir/ to .o
+$(ODIR)/%.o: $(CDIR)/%.c $(CDEP)
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
+# link all obj to binary
 mev: $(OBJ)
-	$(CC) -o $(BDIR)/$@ $^
+	$(CC) -o $(BDIR)/$@ $^ $(CFLAGS)
 
 files:
 	mkdir -p $(ODIR)
@@ -65,11 +63,6 @@ clean:
 	rm $(ODIR)/*.o
 	clear
 	@echo "Cleaned up exec resources."
-
-cleanf:							# Temporary to solve mistakes :|
-	rm src/*.o 
-	rm src/components/*.o
-	rm build/mev.exe
 
 dbg_paths:
 	@echo "Includes: "$(DEP)
