@@ -37,9 +37,9 @@ typedef uint32_t SSD_t;
  *	TODO: make amount of RAM, HDD & SSD types dynamic. -'
  */
 typedef struct {
-	RAM_t *ram[RAM_STICKS];
-	HDD_t *hdd[HARD_DRIVES];
-	SSD_t *ssd[SOLID_DRIVES];
+	RAM_t **ram;
+	HDD_t **hdd;
+	SSD_t **ssd;
 } mem_t;
 
 /*	init_mem:
