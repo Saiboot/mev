@@ -28,7 +28,7 @@ ODIR=obj
 BDIR=build
 
 # src depends
-_SDEP=edbg.h system.h hardware.h
+_SDEP=edbg.h system.h hardware_def.h
 SDEP=$(patsubst %,$(SINC)/%,$(_SDEP))
 
 # component depends

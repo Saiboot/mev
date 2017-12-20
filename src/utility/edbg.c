@@ -4,22 +4,20 @@
 
 const char ET_CPU[] = "[CPU]";
 const char ET_MEM[] = "[Memory]";
+const char ET_IO[]  = "[IO]";
 
 const char *E_TYPES[ET] = {
-        ET_CPU,
-        ET_MEM
+  ET_CPU,
+  ET_MEM,
+  ET_IO
 };
 
 
-int init_emsg()
+ErrCL_t *init_emsg()
 {
-  if(!g_ErrCL) {
-    g_ErrCL = malloc(sizeof(ErrCL_t));
-    g_ErrCL->error = malloc(sizeof(char));
-
-    return 1;
-  }
-  return 0;
+    ErrCL_t *ec = malloc(sizeof(ErrCL_t));
+    ec->error = malloc(sizeof(char));
+  return ec;
 }
 
 void cast_emsg(const char *comp_def, const char *msg)
@@ -49,7 +47,7 @@ int got_error()
 void print_emsg()
 {
   if(got_error())
-    printf("%s::[ERROR] %s\n", g_ErrCL->comp, g_ErrCL->error);
+    printf("%s::[!] %s\n", g_ErrCL->comp, g_ErrCL->error);
 }
 
 void free_emsg()

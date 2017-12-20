@@ -15,6 +15,7 @@
 
 extern const char ET_CPU[];
 extern const char ET_MEM[];
+extern const char ET_IO[];
 
 /*  ErrCL_t :: Error Collection:
  *  - comp: 
@@ -31,7 +32,7 @@ ErrCL_t *g_ErrCL;
 /*  init_emsg:
  *  
  */
-int init_emsg();
+ErrCL_t *init_emsg();
 
 /*  cast_emsg:
  *  

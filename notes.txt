@@ -1,0 +1,11 @@
+
+	Prefixes:
+	- gs_	... global system var
+	- gsp_  ... global system pointer
+	- gu_	... global utility var
+	- gup_	... global utility pointer
+
+	TODO:
+	- Update makefile
+	- Write file I/O utility
+	- ...
