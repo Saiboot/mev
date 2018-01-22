@@ -38,15 +38,11 @@ char *fo(char *path)
 
 }
 
-void fi(char *data)
-{
-
-}
-
-char *fkey(char *path, char *key)
+char *fio_find_key(char *path, char *key)
 {
   char *data = fo(path);
 
+  printf("data: %s\n", data);
   char *token = strtok(data, "=");
 
   while(strcmp(key, token)) {
@@ -55,4 +51,9 @@ char *fkey(char *path, char *key)
   }
 
   return strtok(NULL, "\n");
+}
+
+int fio_find_int(int data)
+{
+  fio_find_key();
 }

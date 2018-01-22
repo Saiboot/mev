@@ -18,6 +18,6 @@ void fi(char *data);
 /*  fkey:
  *  - 
  */
-char *fkey(char *key);
+char *fio_find_key(char *key);
 
 #endif //!_FIO_H
