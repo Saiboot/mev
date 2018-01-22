@@ -5,6 +5,9 @@
 
 #include "components/inc/memory.h"
 #include "components/inc/cpu.h"
+#include "utility/inc/system.h"
+
+#define HARDWARE_PATH "hardware.txt"
 
 /*	
  *	gs_   ... global system variable
@@ -14,24 +17,28 @@
 
 // system bus ??
 
+/*  memory_t:
+ *  - RAM, HDD & SSD
+ */
+typedef struct {
+    uint8_t slots;  // slots * size
+    uint32_t *size;  // => Total memory
+} memory_t;
+
 /*  sys_info:
  *  collection of system information
  *  - Architecture
  *  - ...
  */
 typedef struct {
-  char arch[3];	// Architecture
-
+  char arch[2];	// Architecture
+  uint8_t archID;
+  
 // --- memory
 
-  uint8_t ram_sticks;	// RAM
-  uint32_t *ram_cap;	// - capacity
-
-  uint8_t hdd_sticks;	// HDD
-  uint32_t *hdd_sz;		// - size
-
-  uint8_t ssd_sticks;	// SSD
-  uint32_t *ssd_sz;		// - size
+  memory_t mRAM;
+  memory_t mHDD;
+  memory_t mSSD;
  
 // --- cpu
 
