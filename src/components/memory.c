@@ -6,25 +6,17 @@
  */
 
 
-mem_t *init_mem(uint32_t ram_sz, uint32_t hdd_sz, uint32_t ssd_sz)
+mem_t *init_mem()
 {
 	mem_t *mem = malloc(sizeof(mem_t));
 
 	if(!mem)
 		cast_emsg(ET_MEM, "Allocation: failed");
-	else {
-		int RAM_CP = geti(fkey("hardware.txt", "RAM CAPACITY"));
-		int RAM_AM = geti(fkey("hardware.txt", "RAM STICKS"));
-
-    mem->ram = malloc(sizeof(RAM_t *) * )
-
-		int HDD_SZ = geti(fkey("hardware.txt", "HDD SIZE"));
-		fkey("hardware.txt", "HDD DRIVES");
-
-
-
-		fkey("hardware.txt", "SSD SIZE");
-		fkey("hardware.txt", "SSD DRIVES");
+	else 
+  {
+    mem->mRAM = malloc(sizeof(byte_t) * g_system.mRAM.slots * g_system.mRAM.size);
+    mem->mHDD = malloc(sizeof(byte_t) * g_system.mHDD.slots * g_system.mRAM.size);
+    mem->mSSD = malloc(sizeof(byte_t) * g_system.mSSD.slots * g_system.mSSD.size);
 	}
 
 	return mem;

@@ -26,12 +26,12 @@ void allocresrc(cpu_t *cpu)
       strcpy(g_system->arch, "x16");
 
       /* segments */
-      cpu->ss = malloc(sizeof(pregister32_t));
-      cpu->cs = malloc(sizeof(pregister32_t));
-      cpu->ds = malloc(sizeof(pregister32_t));
-      cpu->es = malloc(sizeof(pregister32_t));
-      cpu->fs = malloc(sizeof(pregister32_t));
-      cpu->gs = malloc(sizeof(pregister32_t));
+      cpu->ss = malloc(sizeof(pRegister32_t));
+      cpu->cs = malloc(sizeof(pRegister32_t));
+      cpu->ds = malloc(sizeof(pRegister32_t));
+      cpu->es = malloc(sizeof(pRegister32_t));
+      cpu->fs = malloc(sizeof(pRegister32_t));
+      cpu->gs = malloc(sizeof(pRegister32_t));
 
       break;
     case X32:
@@ -50,43 +50,42 @@ void allocresrc(cpu_t *cpu)
 /*  next_instruction:
  *  - get next instruction
  */
-pregister32_t next_instruction()
+void next_instruction()
 {
-  g_cpu.status.eFlags.EF = 0;  // flush eflags
-  g_cpu.IP++;
-  return g_cpu.IP;
+  g_cpu.eFlags.AF = 0;  // flush eflags
+  g_cpu.IP++;           // next RAM address
 }
 
-/*  fetch_instruction:
- *  - 
+/*  fetch:
+ *  - fetch instruction from memory
  */
-instruct_t fetch_i(RAM_t *ram)
+void fetch()
 {
-  *(ram + next_instruction());
-
+  gsp_mem->ram[g_cpu.IP];
 
 }
 
-/*  dec_i:
- *  - 
+/*  decode:
+ *  - decode instruction
  */
-void dec_i(instruct_info_t info)
+void decode()
 {
   //...
 }
 
-/*  exec_i:
- *  - 
+/*  execute:
+ *  - execute instruction
  */
-void exec_i(instruct_t instruction)
+void execute()
 {
   //...
 }
 
 void cpu_cycle()
 {
-  instruct_info_t info    = fetch_i(instruct_addr);
-  instruct_t instruction  = dec_i(info);
+  next_instruction();
+  instruct_info_t info = fetch_i(instruct_addr);
+  instruct_t instruction = dec_i(info);
 
   exec_i(instruction);
 }

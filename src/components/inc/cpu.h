@@ -8,12 +8,15 @@
 #include "../../inc/system.h"
 #include "../../inc/edbg.h"
 
+#include "memory.h"
 
 /*  Architectures/modes:
+ *  - X00: error
  *  - X16: real 
  *  - X32: protected
  *  - X64: long
  */
+#define X00 0
 #define X16 1
 #define X32 2
 #define X64 3
@@ -31,9 +34,9 @@ typedef struct {
  *  - 32 bit gpr register
  */
 typedef union {
-  int32_t ERX;
-  int16_t RX;
-  register16_t LH;
+  int32_t ERX;        //  [   <-- ERX -->      ]
+  int16_t RX;         //  [ <-RX-> ][          ]
+  register16_t LH;    //  [        ][ AL ][ AH ]
 } register32_t;
 
 /*  pregister_t:
@@ -48,7 +51,7 @@ typedef union {
 /*  pregister32_t:
  *  - 32 bit memory pointer
  */
-typedef uint32_t pregister32_t;
+typedef MEMORY_t *pRegister32_t;   // TODO: FIX THIS!
 
 /*  EFLAGS_t:
  *  CPU Flags - 32 bits (17 in use)
@@ -82,7 +85,8 @@ typedef struct {
 } EFLAGS_t;
 
 /*  EFLAGSREG_t
- *  - EFLAGS-type wrapper
+ *  - EFLAGS register wrapper
+ *  - useage: toggle every flag off with AF/all flags
  */
 typedef union {
   uint32_t AF;      // -- all flags
@@ -97,7 +101,6 @@ typedef struct {
 // --- flags
 
   const uint8_t flags = 21;   // -- amount of flags
-  EFLAGSREG_t eFlags;         // -- EFLAGS register
 
 // --- physic
 
@@ -119,28 +122,33 @@ typedef struct {
   register32_t C; // counter
   register32_t D; // data
 
-  pregister32_t SP; // stack pointer
-  pregister32_t BP; // base pointer
+  pRegister32_t SP; // stack pointer
+  pRegister32_t BP; // base pointer
 
   register32_t SI; // source
   register32_t DI; // destination
 
 // --- segment pointers  --- legacy real mode
 
-  pregister32_t *ss;  // stack
-  pregister32_t *cs;  // code
-  pregister32_t *ds;  // data (1)
-  pregister32_t *es;  // data (2)
-  pregister32_t *fs;  // data (3)
-  pregister32_t *gs;  // data (4)
+  pRegister32_t ss;  // stack
+  pRegister32_t cs;  // code
+  pRegister32_t ds;  // data (1)
+  pRegister32_t es;  // data (2)
+  pRegister32_t fs;  // data (3)
+  pRegister32_t gs;  // data (4)
 
 // --- 
   uint8_t mode;
-  pregister32_t IP; // instruction pointer
+  pRegister32_t IP; // instruction pointer
 
-// --- Flags
+// --- flags
 
-  status_t status; 
+  EFLAGSREG_t eFlags;         // -- EFLAGS register
+
+// --- cpu status
+
+  status_t status;
+
 } cpu_t;
 
 //
